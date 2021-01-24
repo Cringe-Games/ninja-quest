@@ -16,6 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Ninja Quest"
+run/main_scene="res://resources/scenes/test_level.tscn"
 config/icon="res://icon.png"
 
 [rendering]
