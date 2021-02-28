@@ -1,5 +1,6 @@
 extends Node2D
 
+
 # Prefetch external modules
 var InputHandler: Script = preload("res://resources/scripts/InputHandler.gd")
 var UIDrawer: Script = preload("res://resources/scripts/UIDrawer.gd")
