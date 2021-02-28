@@ -4,6 +4,9 @@ extends Node2D
 signal mouse_hover
 signal mouse_click
 
+func post_init():
+	emit_signal("mouse_hover", get_global_mouse_position())
+
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		emit_signal("mouse_hover", event.position)

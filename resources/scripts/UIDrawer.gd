@@ -1,54 +1,52 @@
 extends Node
 
-enum TILE_MODULAE_ENUM {ACTIVE,HOVER}
+enum TILE_TYPES_ENUM {ACTIVE,HOVER}
 
-var level = null
-var current_tile = {
-	"object": null,
-	"position": Vector2(),
-	"modifier": null
+var level: Node2D;
+var current_tile = get_current_defaults();
+
+const TILES = {
+	TILE_TYPES_ENUM.HOVER: preload("res://resources/tiles/animated_marks_tile.tscn"),
+	# TODO: Update reference with a link to a new AnimatedSprite 
+	TILE_TYPES_ENUM.ACTIVE: preload("res://resources/tiles/animated_marks_tile.tscn")
 }
 
-# Tile type modifiers
-var TILE_MODULAE_MODIFIERS = {
-	TILE_MODULAE_ENUM.ACTIVE: Color(1.0, 0, 0),
-	TILE_MODULAE_ENUM.HOVER: Color(0.5, 0.5, 0)
-}
+func _init(level_object: Node2D):
+	level = level_object
 
-var Tile: PackedScene = preload("res://resources/tiles/animated_marks_tile.tscn")
-
-func _init(level_object):
-	self.level = level_object
-
-func draw_tile(tile_position: Vector2, tile_modifier = TILE_MODULAE_ENUM.HOVER):
-	# If tile position is the same -> skip drawig 
-	if tile_position == current_tile.position and tile_modifier == current_tile.modifier:
+func draw_tile(tile_position: Vector2, tile_type = TILE_TYPES_ENUM.HOVER):
+	# If tile position is the same -> skip further execution
+	if tile_position == current_tile.position and tile_type == current_tile.type:
 		return
 		
 	# Make sure to reset any existing tiles
 	cleanup()
 
 	# Instantiate a new tile object
-	# var tile : Sprite = Tile.instance()
-	var tile : AnimatedSprite = Tile.instance()
+	var tile_object : AnimatedSprite = TILES[tile_type].instance()
 
 	# Assign new tile object properties
-	tile.position = Vector2(tile_position.x, tile_position.y)
-	tile.modulate = TILE_MODULAE_MODIFIERS[tile_modifier]
+	tile_object.position = Vector2(tile_position.x, tile_position.y)
 
 	# Add the tile as a child to a world object
-	tile.play();
-	self.level.add_child(tile)
-	
+	level.add_child(tile_object)
 
 	# Save reference to a current tile
-	current_tile.object = tile
+	current_tile.type = tile_type
+	current_tile.object = tile_object
 	current_tile.position = tile_position
-	current_tile.modifier = tile_modifier
+	
+func get_current_defaults():
+	return {
+		"type": null,
+		"object": null,
+		"position": Vector2()
+	}
 
 func cleanup():
 	if current_tile.object is AnimatedSprite or current_tile.object is Sprite:
+		# Free up the current_tile game object
 		current_tile.object.queue_free()
-		current_tile.object = null
-		current_tile.modifier = null
-		current_tile.position = Vector2()
+		
+		# Reset current tile object entries to default
+		current_tile = get_current_defaults()

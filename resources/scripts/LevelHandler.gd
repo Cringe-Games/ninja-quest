@@ -2,8 +2,8 @@ extends Node2D
 
 
 # Prefetch external modules
-var InputHandler: Script = preload("res://resources/scripts/InputHandler.gd")
-var UIDrawer: Script = preload("res://resources/scripts/UIDrawer.gd")
+const UIDrawer: Script = preload("res://resources/scripts/UIDrawer.gd")
+const InputHandler: Script = preload("res://resources/scripts/InputHandler.gd")
 
 # Initialize extenral modules
 onready var uiDrawer = UIDrawer.new(self)
@@ -16,16 +16,19 @@ func _ready():
 	# Subscribe to input handler events
 	inputHandler.connect("mouse_click", self, "_on_mouse_click")
 	inputHandler.connect("mouse_hover", self, "_on_mouse_hover")
+	
+	# Invoke any post-initialization inputHandler action
+	inputHandler.post_init()
 
 # Mouse click event handler
 func _on_mouse_click(click_position):	
 	var tile_position = get_tile_position_at(click_position)
-	self.uiDrawer.draw_tile(tile_position, self.uiDrawer.TILE_MODULAE_ENUM.ACTIVE)
+	uiDrawer.draw_tile(tile_position, uiDrawer.TILE_TYPES_ENUM.ACTIVE)
 
 # Mouse hover event handler
 func _on_mouse_hover(hover_position):
 	var tile_position = get_tile_position_at(hover_position)
-	self.uiDrawer.draw_tile(tile_position, self.uiDrawer.TILE_MODULAE_ENUM.HOVER)
+	uiDrawer.draw_tile(tile_position, uiDrawer.TILE_TYPES_ENUM.HOVER)
 
 # Helper function to transform coordinates using tilemap API
 func get_tile_position_at(vector: Vector2):
