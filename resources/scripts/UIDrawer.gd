@@ -5,10 +5,11 @@ enum TILE_TYPES_ENUM {ACTIVE,HOVER}
 var level: Node2D;
 var current_tile = get_current_defaults();
 
+# To switch to a different theme, update /tiles/<THEME>/ part here
 const TILES = {
-	TILE_TYPES_ENUM.HOVER: preload("res://resources/tiles/animated_marks_tile.tscn"),
+	TILE_TYPES_ENUM.HOVER: preload("res://resources/tile_effects/bright_moon/hover_effect.tscn"),
 	# TODO: Update reference with a link to a new AnimatedSprite 
-	TILE_TYPES_ENUM.ACTIVE: preload("res://resources/tiles/animated_marks_tile.tscn")
+	TILE_TYPES_ENUM.ACTIVE: preload("res://resources/tile_effects/bright_moon/hover_effect.tscn")
 }
 
 func _init(level_object: Node2D):
@@ -20,7 +21,7 @@ func draw_tile(tile_position: Vector2, tile_type = TILE_TYPES_ENUM.HOVER):
 		return
 		
 	# Make sure to reset any existing tiles
-	cleanup()
+	try_reset_current()
 
 	# Instantiate a new tile object
 	var tile_object : AnimatedSprite = TILES[tile_type].instance()
@@ -43,7 +44,7 @@ func get_current_defaults():
 		"position": Vector2()
 	}
 
-func cleanup():
+func try_reset_current():
 	if current_tile.object is AnimatedSprite or current_tile.object is Sprite:
 		# Free up the current_tile game object
 		current_tile.object.queue_free()
