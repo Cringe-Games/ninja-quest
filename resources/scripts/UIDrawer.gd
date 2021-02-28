@@ -1,6 +1,6 @@
 extends Node
 
-enum TILE_TYPES_ENUM {ACTIVE,HOVER}
+enum TILE_TYPES_ENUM {HOVER,CLICK}
 
 var level: Node2D;
 var current_tile = get_current_defaults();
@@ -8,7 +8,7 @@ var current_tile = get_current_defaults();
 # To switch to a different theme, update /tiles/<THEME>/ part here
 const TILES = {
 	TILE_TYPES_ENUM.HOVER: preload("res://resources/tile_effects/bright_moon/hover_effect.tscn"), 
-	TILE_TYPES_ENUM.ACTIVE: preload("res://resources/tile_effects/bright_moon/click_effect.tscn")
+	TILE_TYPES_ENUM.CLICK: preload("res://resources/tile_effects/bright_moon/click_effect.tscn")
 }
 
 func _init(level_object: Node2D):

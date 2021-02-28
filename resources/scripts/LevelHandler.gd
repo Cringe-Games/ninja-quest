@@ -32,7 +32,7 @@ func try_draw(tile_position, tile_type):
 # Mouse click event handler
 func _on_mouse_click(click_position):	
 	var tile_position = tmManager.get_tile_position_at(click_position)
-	try_draw(tile_position, uiDrawer.TILE_TYPES_ENUM.ACTIVE)
+	try_draw(tile_position, uiDrawer.TILE_TYPES_ENUM.CLICK)
 
 # Mouse hover event handler
 func _on_mouse_hover(hover_position):
