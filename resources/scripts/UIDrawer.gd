@@ -45,9 +45,13 @@ func get_current_defaults():
 	}
 
 func try_reset_current():
-	if current_tile.object is AnimatedSprite or current_tile.object is Sprite:
+	var can_reset = current_tile.object is AnimatedSprite or current_tile.object is Sprite
+	
+	if can_reset:
 		# Free up the current_tile game object
 		current_tile.object.queue_free()
 		
 		# Reset current tile object entries to default
 		current_tile = get_current_defaults()
+	
+	return can_reset
