@@ -7,9 +7,8 @@ var current_tile = get_current_defaults();
 
 # To switch to a different theme, update /tiles/<THEME>/ part here
 const TILES = {
-	TILE_TYPES_ENUM.HOVER: preload("res://resources/tile_effects/bright_moon/hover_effect.tscn"),
-	# TODO: Update reference with a link to a new AnimatedSprite 
-	TILE_TYPES_ENUM.ACTIVE: preload("res://resources/tile_effects/bright_moon/hover_effect.tscn")
+	TILE_TYPES_ENUM.HOVER: preload("res://resources/tile_effects/bright_moon/hover_effect.tscn"), 
+	TILE_TYPES_ENUM.ACTIVE: preload("res://resources/tile_effects/bright_moon/click_effect.tscn")
 }
 
 func _init(level_object: Node2D):
@@ -28,6 +27,9 @@ func draw_tile(tile_position: Vector2, tile_type = TILE_TYPES_ENUM.HOVER):
 
 	# Assign new tile object properties
 	tile_object.position = Vector2(tile_position.x, tile_position.y)
+	
+	# Start a new animation cycle
+	tile_object.play()
 
 	# Add the tile as a child to a world object
 	level.add_child(tile_object)
@@ -45,13 +47,19 @@ func get_current_defaults():
 	}
 
 func try_reset_current():
+	# Make sure we're dealing with the valid object
 	var can_reset = current_tile.object is AnimatedSprite or current_tile.object is Sprite
 	
-	if can_reset:
-		# Free up the current_tile game object
-		current_tile.object.queue_free()
+	if not can_reset:
+		return false
 		
-		# Reset current tile object entries to default
-		current_tile = get_current_defaults()
+	# Stop an ongoing animation
+	current_tile.object.stop()
+
+	# Free up the current_tile game object
+	current_tile.object.queue_free()
 	
-	return can_reset
+	# Reset current tile object entries to default
+	current_tile = get_current_defaults()
+	
+	return true
