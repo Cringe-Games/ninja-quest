@@ -8,9 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Resource",
+"class": "ArenaState",
+"language": "GDScript",
+"path": "res://resources/scripts/ArenaState.gd"
+}, {
+"base": "TileMap",
+"class": "TilemapHandler",
+"language": "GDScript",
+"path": "res://resources/scripts/TilemapHandler.gd"
+} ]
 _global_script_class_icons={
-
+"ArenaState": "",
+"TilemapHandler": ""
 }
 
 [application]
