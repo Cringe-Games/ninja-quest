@@ -1,29 +1,29 @@
 extends Node
 
-enum TILE_TYPES_ENUM {HOVER,CLICK}
+enum EFFECT_TYPES {HOVER,CLICK}
 
 var level: Node2D;
 var current_tile = get_current_defaults();
 
 # To switch to a different theme, update /tiles/<THEME>/ part here
-const TILES = {
-	TILE_TYPES_ENUM.HOVER: preload("res://resources/tile_effects/bright_moon/hover_effect.tscn"), 
-	TILE_TYPES_ENUM.CLICK: preload("res://resources/tile_effects/bright_moon/click_effect.tscn")
+const EFFECTS = {
+	EFFECT_TYPES.HOVER: preload("res://resources/tile_effects/bright_moon/hover_effect.tscn"), 
+	EFFECT_TYPES.CLICK: preload("res://resources/tile_effects/bright_moon/click_effect.tscn")
 }
 
 func _init(level_object: Node2D):
 	level = level_object
 
-func draw_tile(tile_position: Vector2, tile_type = TILE_TYPES_ENUM.HOVER):
+func draw_tile_effect(tile_position: Vector2, effect_type = EFFECTS.HOVER):
 	# If tile position is the same -> skip further execution
-	if tile_position == current_tile.position and tile_type == current_tile.type:
+	if tile_position == current_tile.position and effect_type == current_tile.type:
 		return
 		
 	# Make sure to reset any existing tiles
 	try_reset_current()
 
 	# Instantiate a new tile object
-	var tile_object : AnimatedSprite = TILES[tile_type].instance()
+	var tile_object : AnimatedSprite = EFFECTS[effect_type].instance()
 
 	# Assign new tile object properties
 	tile_object.position = Vector2(tile_position.x, tile_position.y)
@@ -35,7 +35,7 @@ func draw_tile(tile_position: Vector2, tile_type = TILE_TYPES_ENUM.HOVER):
 	level.add_child(tile_object)
 
 	# Save reference to a current tile
-	current_tile.type = tile_type
+	current_tile.type = effect_type
 	current_tile.object = tile_object
 	current_tile.position = tile_position
 	
