@@ -9,6 +9,7 @@ const ArenaState: Script = preload("res://resources/scripts/ArenaState.gd")
 onready var uiDrawer = UIDrawer.new(self)
 onready var inputHandler = InputHandler.new()
 onready var arenaState: ArenaState = ArenaState.new($TileMap)
+onready var hero = get_node('KinematicBody2D')
 
 func _ready():
 	# Input handler must be assigned on the scene to share signals
@@ -34,7 +35,9 @@ func try_handle_interaction(interaction_position, effect_type):
 		return false
 		
 	if effect_type == uiDrawer.EFFECT_TYPES.CLICK:
-		print(tile_position, arenaState.map_to_matrix(tile_position.map_position))
+		print(tile_position)
+		arenaState.assignCharacter(tile_position, 1, hero)
+		#print(tile_position, arenaState.map_to_matrix(tile_position.map_position))
 
 	# Otherwise, draw the object based on the received tile world position
 	uiDrawer.draw_tile_effect(tile_position.world_position, effect_type)
